@@ -781,7 +781,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goodItemPrefab: {fileID: 378907114872012737, guid: 95f4a6e2700204c43b9e6c8d33a6f9c5, type: 3}
   badItemPrefab: {fileID: 5748371277906102618, guid: 28cb77be326ebed44a4aa91f51c11f70, type: 3}
-  spawnXMin: -7
+  spawnXMin: -6.92
   spawnXMax: 7
   spawnYMin: 3
   spawnYMax: 6
