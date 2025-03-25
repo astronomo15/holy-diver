@@ -4,52 +4,74 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 15f;
+    public float speed = 5f;
     private int badItemCount = 0;
-    public TextMeshProUGUI gameOverText;
+    private int score = 0; // Pontuaï¿½ï¿½o
 
     public float minX = -7f; // Limite esquerdo
     public float maxX = 7f;  // Limite direito
 
-    void Update()
+    public GameObject gameOverPanel; // Painel de Game Over
+    public TextMeshProUGUI scoreText; // Texto da pontuaï¿½ï¿½o
+
+    private Rigidbody2D rb;
+    private float moveInput;
+
+    void Start()
     {
-        MovePlayer();
+        rb = GetComponent<Rigidbody2D>();
+        UpdateScoreText();
     }
 
-    void MovePlayer()
+    void Update()
     {
-        float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        Vector3 newPosition = transform.position + new Vector3(moveX, 0, 0);
+        moveInput = Input.GetAxis("Horizontal"); // Pegando entrada do jogador
+    }
 
-        // Mantém o player dentro dos limites
-        newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+    void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2(moveInput * speed, rb.linearVelocity.y);
 
-        transform.position = newPosition;
+        // Mantï¿½m o player dentro dos limites
+        float clampedX = Mathf.Clamp(rb.position.x, minX, maxX);
+        rb.position = new Vector2(clampedX, rb.position.y);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("GoodItem"))
         {
+            score += 10; // Aumenta a pontuaï¿½ï¿½o
+            UpdateScoreText();
             Destroy(other.gameObject);
-            SpawnManager.Instance.SpawnItems();
+            SpawnManager.Instance.SpawnItems(); // Spawna novos itens
         }
         else if (other.CompareTag("BadItem"))
         {
             Destroy(other.gameObject);
             badItemCount++;
-            SpawnManager.Instance.SpawnItems();
 
             if (badItemCount >= 3)
             {
-                gameOverText.gameObject.SetActive(true);
-                Invoke("RestartGame", 2f);
+                GameOver();
             }
         }
     }
 
-    void RestartGame()
+    void UpdateScoreText()
     {
+        scoreText.text = "Pontuacao: " + score;
+    }
+
+    void GameOver()
+    {
+        Time.timeScale = 0; // Para o jogo
+        gameOverPanel.SetActive(true); // Mostra o painel de Game Over
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1; // Volta ao normal
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FallingItem : MonoBehaviour
 {
-    public float fallSpeed = 3f; // Velocidade de descida
+    public float fallSpeed = 3f; // Velocidade da queda
 
     void Update()
     {
