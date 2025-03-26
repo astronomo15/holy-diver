@@ -1,48 +1,40 @@
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public int pontuacao = 0;
+    public int erros = 0;
+    public int errosParaGameOver = 3;
 
-    public SpawnManager spawnManager; // Referência ao SpawnManager
-    public TextMeshProUGUI scoreText;
-    private int score = 0;
+    public Text pontuacaoText;
+    public GameObject gameOverPanel;
 
-    private void Awake()
+    public void AdicionarPontuacao(int pontos)
     {
-        if (Instance == null)
+        pontuacao += pontos;
+        pontuacaoText.text = "Pontuação: " + pontuacao;
+    }
+
+    public void RegistrarErro()
+    {
+        erros++;
+        if (erros >= errosParaGameOver)
         {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
+            GameOver();
         }
     }
 
-    void Start()
+    void GameOver()
     {
-        UpdateScoreUI();
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0;
     }
 
-    // Função que é chamada para aumentar a pontuação
-    public void AddScore(int points)
+    public void ReiniciarJogo()
     {
-        score += points;
-        UpdateScoreUI();
-    }
-
-    // Função para exibir a pontuação no UI
-    void UpdateScoreUI()
-    {
-        scoreText.text = "Score: " + score;
-    }
-
-    // Função chamada quando o Player 1 perde
-    public void PlayerGameOver(int playerNumber)
-    {
-        Debug.Log("Game Over para o Player " + playerNumber);
-        // Lógica para finalizar o jogo ou reiniciar a cena
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

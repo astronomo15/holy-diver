@@ -148,12 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94237a0d5a651b540a7452bafe8908f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1Score: 0
-  player2Score: 0
-  player1ScoreText: {fileID: 958655477}
-  player2ScoreText: {fileID: 1251094278}
-  gameOverPanel: {fileID: 2076644207}
-  gameOverText: {fileID: 1685931938}
+  pontuacao: 0
+  erros: 0
+  errosParaGameOver: 3
+  pontuacaoText: {fileID: 0}
+  gameOverPanel: {fileID: 0}
 --- !u!4 &31322117
 Transform:
   m_ObjectHideFlags: 0
@@ -305,10 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4122df6d2227a5447b28fecb2c173d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  playerNumber: 1
-  leftLimit: -9
-  rightLimit: 0
+  velocidade: 5
+  limiteX: 3
 --- !u!212 &380333067
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -829,13 +826,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4dc4c1b3943294098734537b9b9ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goodItemPrefab: {fileID: 378907114872012737, guid: 95f4a6e2700204c43b9e6c8d33a6f9c5, type: 3}
-  badItemPrefab: {fileID: 5748371277906102618, guid: 28cb77be326ebed44a4aa91f51c11f70, type: 3}
-  spawnXMin: -7
-  spawnXMax: 7
-  spawnYMin: 8
-  spawnYMax: 8
-  maxItemsOnScreen: 4
+  itemBom: {fileID: 0}
+  itemRuim: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  spawnRate: 1.5
+  fallSpeed: 3
 --- !u!4 &1094918271
 Transform:
   m_ObjectHideFlags: 0
@@ -1017,13 +1012,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4dc4c1b3943294098734537b9b9ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goodItemPrefab: {fileID: 5748371277906102618, guid: 28cb77be326ebed44a4aa91f51c11f70, type: 3}
-  badItemPrefab: {fileID: 378907114872012737, guid: 95f4a6e2700204c43b9e6c8d33a6f9c5, type: 3}
-  spawnXMin: -7
-  spawnXMax: 7
-  spawnYMin: 3
-  spawnYMax: 6
-  maxItemsOnScreen: 4
+  itemBom: {fileID: 0}
+  itemRuim: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  spawnRate: 1.5
+  fallSpeed: 3
 --- !u!212 &1580896165
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1330,13 +1323,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4dc4c1b3943294098734537b9b9ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goodItemPrefab: {fileID: 5748371277906102618, guid: 28cb77be326ebed44a4aa91f51c11f70, type: 3}
-  badItemPrefab: {fileID: 378907114872012737, guid: 95f4a6e2700204c43b9e6c8d33a6f9c5, type: 3}
-  spawnXMin: -7
-  spawnXMax: 7
-  spawnYMin: 3
-  spawnYMax: 6
-  maxItemsOnScreen: 4
+  itemBom: {fileID: 0}
+  itemRuim: {fileID: 0}
+  spawnPoint: {fileID: 0}
+  spawnRate: 1.5
+  fallSpeed: 3
 --- !u!1 &1885756326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,9 +1710,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59426b85cc232e74895c4a1dc4852ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  leftLimit: 0
-  rightLimit: 9
 --- !u!50 &2114110698
 Rigidbody2D:
   serializedVersion: 5

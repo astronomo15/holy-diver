@@ -2,43 +2,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f;
-    public float minX = -7f;  // Limite da esquerda
-    public float maxX = 7f;   // Limite da direita
-    public GameManager gameManager;
+    public float velocidade = 5f;
+    public float limiteX = 3f;
 
-    private Rigidbody2D rb;
-
-    void Start()
+    private void Update()
     {
-        rb = GetComponent<Rigidbody2D>();
-    }
+        float move = Input.GetAxis("Horizontal") * velocidade * Time.deltaTime;
+        transform.position += new Vector3(move, 0, 0);
 
-    void Update()
-    {
-        // Movimentação do Player com as teclas A/D
-        float move = Input.GetAxis("Horizontal"); // A/D para Player 1
-        rb.linearVelocity = new Vector2(move * speed, 0);
-
-        // Limita o movimento do player
-        float clampedX = Mathf.Clamp(transform.position.x, minX, maxX);
+        // Limitar movimento dentro da tela
+        float clampedX = Mathf.Clamp(transform.position.x, -limiteX, limiteX);
         transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
-    }
-
-    // Detecta a colisão com itens
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("GoodItem"))
-        {
-            // Aumenta a pontuação quando o Player 1 coleta um item bom
-            GameManager.Instance.AddScore(1);
-            Destroy(other.gameObject);
-            SpawnManager.Instance.SpawnItems(); // Garantir que spawnem novos itens
-        }
-        else if (other.CompareTag("BadItem"))
-        {
-            // Chama a função de GameOver quando o Player 1 coleta um item ruim
-            GameManager.Instance.PlayerGameOver(1);
-        }
     }
 }
