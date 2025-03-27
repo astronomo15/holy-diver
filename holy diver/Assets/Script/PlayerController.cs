@@ -2,16 +2,31 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float velocidade = 5f;
-    public float limiteX = 3f;
+    public static float velocidade = 6f; // Velocidade sincronizada para ambos os jogadores
+    public float limiteEsquerdo = -3f;
+    public float limiteDireito = 3f;
+
+    private Rigidbody2D rb;
+    private float movimento;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0; // Garante que o player não caia
+        rb.freezeRotation = true; // Evita rotação inesperada
+    }
 
     private void Update()
     {
-        float move = Input.GetAxis("Horizontal") * velocidade * Time.deltaTime;
-        transform.position += new Vector3(move, 0, 0);
+        movimento = Input.GetAxisRaw("Horizontal"); // Remove suavização do Input
+    }
 
-        // Limitar movimento dentro da tela
-        float clampedX = Mathf.Clamp(transform.position.x, -limiteX, limiteX);
-        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
+    private void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2(movimento * velocidade, rb.linearVelocity.y);
+
+        // Impedir o player de sair dos limites
+        float clampedX = Mathf.Clamp(rb.position.x, limiteEsquerdo, limiteDireito);
+        rb.position = new Vector2(clampedX, rb.position.y);
     }
 }
