@@ -2,33 +2,51 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject itemBomPrefab;
-    public GameObject itemRuimPrefab;
+    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private GameObject[] enemyPrefabs;
+    [SerializeField] private float spawnInterval = 2f;
 
-    public float xMin = -5f; // Mínimo da área de spawn no eixo X
-    public float xMax = 5f;  // Máximo da área de spawn no eixo X
-    public float ySpawn = 6f; // Altura fixa onde os itens surgem
+    private float timer;
 
-    public float tempoSpawnMin = 1f; // Tempo mínimo entre spawns
-    public float tempoSpawnMax = 3f; // Tempo máximo entre spawns
-
-    public bool ladoEsquerdo = true; // Define se este spawn é do Player 1 ou Player 2
-
-    private void Start()
+    private void Update()
     {
-        Invoke("SpawnItem", Random.Range(tempoSpawnMin, tempoSpawnMax));
+        timer += Time.deltaTime;
+
+        if (timer >= spawnInterval)
+        {
+            SpawnEnemy();
+            timer = 0f;
+        }
     }
 
-    private void SpawnItem()
+    private void SpawnEnemy()
     {
-        float posX = Random.Range(xMin, xMax);
-        Vector2 spawnPosition = new Vector2(posX, ySpawn);
+        if (enemyPrefabs.Length == 0 || spawnPoints.Length == 0)
+        {
+            return;
+        }
 
-        // Decide aleatoriamente qual item spawnar (50% de chance para cada)
-        GameObject item = Random.value > 0.5f ? itemBomPrefab : itemRuimPrefab;
-        Instantiate(item, spawnPosition, Quaternion.identity);
+        int randomEnemyIndex = Random.Range(0, enemyPrefabs.Length);
+        int randomSpawnIndex = Random.Range(0, spawnPoints.Length);
 
-        // Chama o próximo spawn dentro do tempo definido
-        Invoke("SpawnItem", Random.Range(tempoSpawnMin, tempoSpawnMax));
+        GameObject enemyToSpawn = enemyPrefabs[randomEnemyIndex];
+        Transform spawnPoint = spawnPoints[randomSpawnIndex];
+
+        Instantiate(enemyToSpawn, spawnPoint.position, spawnPoint.rotation);
+    }
+
+    public void SetEnemyPrefabs(GameObject[] newPrefabs)
+    {
+        enemyPrefabs = newPrefabs;
+    }
+
+    public void SetSpawnPoints(Transform[] newSpawnPoints)
+    {
+        spawnPoints = newSpawnPoints;
+    }
+
+    public void SetSpawnInterval(float newInterval)
+    {
+        spawnInterval = Mathf.Max(0.1f, newInterval);
     }
 }

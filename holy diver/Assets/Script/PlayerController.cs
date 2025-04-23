@@ -2,31 +2,31 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public static float velocidade = 6f; // Velocidade sincronizada para ambos os jogadores
-    public float limiteEsquerdo = -3f;
-    public float limiteDireito = 3f;
+    [SerializeField] private float leftLimit = -3f;
+    [SerializeField] private float rightLimit = 3f;
+    [SerializeField] private string inputName;
 
     private Rigidbody2D rb;
-    private float movimento;
+    private float moveInput;
+    private PlayerStats stats;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0; // Garante que o player não caia
-        rb.freezeRotation = true; // Evita rotação inesperada
+        stats = GetComponent<PlayerStats>();
     }
 
     private void Update()
     {
-        movimento = Input.GetAxisRaw("Horizontal"); // Remove suavização do Input
+        moveInput = Input.GetAxisRaw(inputName);
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(movimento * velocidade, rb.linearVelocity.y);
+        float currentSpeed = stats.GetSpeed();
+        rb.linearVelocity = new Vector2(moveInput * currentSpeed, rb.linearVelocity.y);
 
-        // Impedir o player de sair dos limites
-        float clampedX = Mathf.Clamp(rb.position.x, limiteEsquerdo, limiteDireito);
+        float clampedX = Mathf.Clamp(rb.position.x, leftLimit, rightLimit);
         rb.position = new Vector2(clampedX, rb.position.y);
     }
 }
